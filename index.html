@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>star warz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h4>List the name of characters</h4>
+    <div class="container"> 
+    </div>
+    <script>
+        const apiurl= 'https://swapi.dev/api/people/'
+        async function getUsers() {
+            try {
+                let res = await fetch(apiurl);
+                return await res.json();
+            } catch (error) {
+                console.log(error);
+            } 
+        }
+        async function renderUsers() {
+            let users = await getUsers();
+            console.log(users)
+           let html = '';
+            users.results.forEach((user,index) => {
+                let htmlSegment = `
+                <div class='center'>
+                <img src="./images/pics.webp">
+                
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" href="#collapse-${index}">${user.name}</a>
+                        </h4>
+                      </div>
+                      <div id="collapse-${index}" class="panel-collapse collapse">
+                        <ul class="list-group">
+                          <li class="list-group-item"><span>Height</span> : ${user.height}</li>
+                          <li class="list-group-item"<span>Mass</span> : >${user.mass}</li>
+                          <li class="list-group-item"><span>Hair Color</span> : ${user.hair_color}</li>
+                        </ul>
+                        <div class="panel-footer">Footer</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  `;
+                html += htmlSegment;
+            });
+            let container = document.querySelector('.container');
+            container.innerHTML = html
+        }
+        renderUsers();
+    </script>
+</body>
+</html>
